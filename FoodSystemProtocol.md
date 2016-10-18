@@ -159,6 +159,7 @@
     {
 		"type"   : "submit_order_result",
    		"body"   : {
+		"order_id"	: 12345 订单id
         "code"  : "返回码"
         "desc"	: "返回说明"
         }  
@@ -166,17 +167,86 @@
 
 	code说明：
 	0   表示下单成功
-    
-	200 桌子已经被占
-	201	没有空位 
-	202 已经下班
-	103	系统异常
+    非零 表示失败，原因说明在desc中
+	
 
 
 # 7. 结账 reckoning#
+协议
+
+上行
+
+     {
+		"type"	: 	"reckoning"
+		"body"	:{
+			"order_id"		:	123		订单id
+			"desk_no"		:	1 		桌号
+			"total_price" 	: 	100.0 	总金额
+			"discount"		: 	9.5		折扣比例  1-10
+			"payment"		:	95.0	应收金额
+			"receipt"		:	100		实收金额
+			"change"		:	5.00	找零	
+ 			"waiter" 		:	"服务员"
+					
+		 }
+
+     }
 
 
-8. 修改订单
+# 8.结账结果 reckoning_result #
+协议
+
+下行
+
+    {
+		"type"   : "reckoning_result",
+   		"body"   : {
+		"order_id"	:	123		订单id
+        "code"  	: "返回码"
+        "desc"		: "返回说明"
+        }  
+	}
+	code说明：
+	0   表示结账成功
+	非零 表示失败，原因说明在desc中
+	
+	
+
+# 9. 修改订单 modify_order #
+协议
+
+上行
+    {
+		"type"	: 	"modify_order"
+		"body"	:{
+			"order_id"		:	123		订单id
+			"desk_no"		:	1 桌号
+ 			"waiter" 		:	"服务员"
+			"foods"	: [
+				{
+					"fid" 	:  123 "菜品id"
+					"count"	:  1  数量		
+					"remark":	"备注，比如少放辣椒"
+				}
+				，
+				...
+
+			]	
+			
+		 }
+
+     }
+
+下行
+     {
+		"type"   : "modify_order",
+   		"body"   : {
+		"order_id"	:	123		订单id
+        "code"  	: "返回码"
+        "desc"		: "返回说明"
+        }  
+	}
+
 9. 删除订单
 10. 获取订单
 11. 获取订单详情
